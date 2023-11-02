@@ -29,7 +29,7 @@ export function Home() {
             <Typography>
               Ubah file post.json untuk mengubah data postingan.
             </Typography>
-            {result && <Typography>Hasil : {result}</Typography>}
+            <Typography>Hasil : {result}</Typography>
             <Button
               disabled={isLoading}
               variant="outlined"
