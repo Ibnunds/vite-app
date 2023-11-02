@@ -3,12 +3,14 @@ import { Typography, Card, CardBody, Button } from "@material-tailwind/react";
 
 export function Home() {
   const [isLoading, setIsLoading] = React.useState(false);
+  const [result, setResult] = React.useState("");
 
   async function botAutoPost() {
     setIsLoading(true);
     await fetch("http://localhost:3000/post")
       .then((res) => res.json())
       .then((result) => {
+        setResult(result?.postUrl);
         setIsLoading(false);
       })
       .catch((err) => {
@@ -27,6 +29,7 @@ export function Home() {
             <Typography>
               Ubah file post.json untuk mengubah data postingan
             </Typography>
+            {result && <Typography>Hasil : {result}</Typography>}
             <Button
               disabled={isLoading}
               variant="outlined"
