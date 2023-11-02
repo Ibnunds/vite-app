@@ -1,5 +1,8 @@
-import { AtSymbolIcon } from "@heroicons/react/24/solid";
-import Home from "./pages/dashboard/home";
+import {
+  AtSymbolIcon,
+  ChatBubbleBottomCenterTextIcon,
+} from "@heroicons/react/24/solid";
+import { IGComment, IGPost } from "./pages/dashboard";
 const icon = {
   className: "w-5 h-5 text-inherit",
 };
@@ -12,8 +15,14 @@ export const routes = [
       {
         icon: <AtSymbolIcon {...icon} />,
         name: "Auto Posting",
-        path: "/home",
-        element: <Home />,
+        path: "/ig-post",
+        element: <IGPost />,
+      },
+      {
+        icon: <ChatBubbleBottomCenterTextIcon {...icon} />,
+        name: "Auto Comment",
+        path: "/ig-comment",
+        element: <IGComment />,
       },
     ],
   },
