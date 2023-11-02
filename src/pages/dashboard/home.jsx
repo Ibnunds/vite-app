@@ -27,7 +27,7 @@ export function Home() {
               Instagram Auto Posting
             </Typography>
             <Typography>
-              Ubah file post.json untuk mengubah data postingan
+              Ubah file post.json untuk mengubah data postingan.
             </Typography>
             {result && <Typography>Hasil : {result}</Typography>}
             <Button
