@@ -3,17 +3,18 @@ import { Typography, Card, CardBody, Button } from "@material-tailwind/react";
 
 export function Home() {
   const [isLoading, setIsLoading] = React.useState(false);
-  const [result, setResult] = React.useState("");
+  const [data, setData] = React.useState();
 
   async function botAutoPost() {
     setIsLoading(true);
     await fetch("http://localhost:3000/post")
       .then((res) => res.json())
       .then((result) => {
-        setResult(result?.postUrl);
+        setData(result);
         setIsLoading(false);
       })
       .catch((err) => {
+        setData(err);
         setIsLoading(false);
       });
   }
@@ -24,12 +25,12 @@ export function Home() {
         <Card className="mt-6 w-full">
           <CardBody>
             <Typography variant="h5" color="blue-gray" className="mb-2">
-              Instagram Auto Posting
+              Instagram Auto Posting v1
             </Typography>
             <Typography>
               Ubah file post.json untuk mengubah data postingan.
             </Typography>
-            <Typography>Hasil : {result}</Typography>
+            <Typography>Hasil : {JSON.stringify(data)}</Typography>
             <Button
               disabled={isLoading}
               variant="outlined"
