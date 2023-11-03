@@ -6,16 +6,18 @@ import {
   Button,
   Spinner,
   Chip,
+  Input,
 } from "@material-tailwind/react";
 
 export function IGPost() {
   const [isLoading, setIsLoading] = React.useState(false);
   const [data, setData] = React.useState();
+  const [batch, setBatch] = React.useState(2);
 
   async function botAutoPost() {
     setData();
     setIsLoading(true);
-    await fetch("http://localhost:3000/ig/post")
+    await fetch(`http://localhost:3000/ig/post?batch=${batch}`)
       .then((res) => res.json())
       .then((result) => {
         setData(result.data);
@@ -27,11 +29,8 @@ export function IGPost() {
       });
   }
 
-  const TestCom = () => {
-    setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 3000);
+  const ValidateBatch = () => {
+    return batch > 0 && batch <= 10 ? true : false;
   };
 
   return (
@@ -45,6 +44,15 @@ export function IGPost() {
             <Typography>
               Ubah file post.json untuk mengubah data postingan.
             </Typography>
+            <div className="my-3 w-24">
+              <Input
+                type="number"
+                maxLength={2}
+                label="Batch (maks. 10)"
+                value={batch}
+                onChange={(e) => setBatch(e.target.value)}
+              />
+            </div>
             {isLoading && (
               <div className="mt-3 flex gap-4">
                 <Spinner className="h-6 w-6" />
@@ -52,7 +60,7 @@ export function IGPost() {
               </div>
             )}
             <Button
-              disabled={isLoading}
+              disabled={isLoading || !ValidateBatch()}
               variant="outlined"
               className="mt-3 flex items-center gap-3 border-blue-500 normal-case text-blue-500"
               onClick={botAutoPost}

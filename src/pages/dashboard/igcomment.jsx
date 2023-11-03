@@ -14,11 +14,14 @@ export function IGComment() {
   const [data, setData] = React.useState();
   const [target, setTarget] = React.useState("");
   const [targetValid, setTargetValid] = React.useState(true);
+  const [batch, setBatch] = React.useState(2);
 
   async function botAutoComment() {
     setData();
     setIsLoading(true);
-    await fetch(`http://localhost:3000/ig/comment?target=${target}`)
+    await fetch(
+      `http://localhost:3000/ig/comment?target=${target}&batch=${batch}`
+    )
       .then((res) => res.json())
       .then((result) => {
         setData(result.data);
@@ -42,6 +45,10 @@ export function IGComment() {
     }
   };
 
+  const ValidateBatch = () => {
+    return batch > 0 && batch <= 10 ? true : false;
+  };
+
   return (
     <div className="mt-12">
       <div className="mb-12 grid gap-y-6 gap-x-6">
@@ -53,26 +60,38 @@ export function IGComment() {
             <Typography>
               Ubah file komentar.json untuk mengubah data komentar.
             </Typography>
-            <div className="my-3">
-              <Input
-                type="url"
-                label="Masukan URL postingan IG"
-                value={target}
-                onChange={(e) => {
-                  setTarget(e.target.value);
-                  setTargetValid(true);
-                }}
-              />
-              {!targetValid && (
-                <Typography
-                  variant="small"
-                  color="gray"
-                  className="mt-2 flex items-center gap-1 font-normal text-red-500"
-                >
-                  Url postingan instagram tidak valid
-                </Typography>
-              )}
+            <div className="flex gap-3">
+              <div className="my-3 w-96">
+                <Input
+                  type="url"
+                  label="Masukan URL postingan IG"
+                  value={target}
+                  onChange={(e) => {
+                    setTarget(e.target.value);
+                    setTargetValid(true);
+                  }}
+                />
+                {!targetValid && (
+                  <Typography
+                    variant="small"
+                    color="gray"
+                    className="mt-2 flex items-center gap-1 font-normal text-red-500"
+                  >
+                    Url postingan instagram tidak valid
+                  </Typography>
+                )}
+              </div>
+              <div className="my-3 w-24">
+                <Input
+                  type="number"
+                  maxLength={2}
+                  label="Batch (maks. 10)"
+                  value={batch}
+                  onChange={(e) => setBatch(e.target.value)}
+                />
+              </div>
             </div>
+
             {isLoading && (
               <div className="mt-3 flex gap-4">
                 <Spinner className="h-6 w-6" />
@@ -80,7 +99,9 @@ export function IGComment() {
               </div>
             )}
             <Button
-              disabled={isLoading || !targetValid || !target}
+              disabled={
+                isLoading || !targetValid || !target || !ValidateBatch()
+              }
               variant="outlined"
               className="mt-3 flex items-center gap-3 border-blue-500 normal-case text-blue-500"
               onClick={validasiURL}
